@@ -1,6 +1,26 @@
 const DatabaseSingleton = require("../config/ConfigDB");
 const databaseInstance = new DatabaseSingleton();
 
+async function inserirCliente(req, res) {
+	let registro = req.body;
+	databaseInstance.db.run(
+		"INSERT INTO clientes (id, nome, cpf, endereco) VALUES (?, ?)",
+		[
+			registro.id,
+			registro.nome,
+            registro.cpf,
+            registro.endereco
+		],
+		(err) => {
+			if (err) {
+                res.status(500).send("Erro ao inserir o categoria no banco de dados.");
+            } else {
+                res.redirect("/");
+            }
+		}
+	
+	);
+}
 async function selectClientes(req, res) {
     databaseInstance.db.all(`SELECT 
     clientes.id,
